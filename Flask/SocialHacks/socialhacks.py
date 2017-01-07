@@ -10,9 +10,7 @@ app.config.from_object(__name__) # load config from this file
 # Load default config and override config from an environment variable
 app.config.update(dict(
     DATABASE=os.path.join(app.root_path, 'socialhacks.db'),
-    SECRET_KEY='development_key',
-    USERNAME='admin',
-    PASSWORD='default'
+    SECRET_KEY='development_key'
 ))
 app.config.from_envvar('SOCIALHACKS_SETTINGS', silent=True)
 
