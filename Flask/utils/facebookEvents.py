@@ -1,7 +1,7 @@
 
 import facebook
 import json
-
+import addEventToDB
 #make sure to:
 #    pip install -e git+https://github.com/mobolic/facebook-sdk.git#egg=facebook-sdk
 
@@ -38,45 +38,39 @@ print group_dict['data']
 
 l = len(group_dict['data'])
 i = 0
-event_name = []
-event_location = []
-event_start_time = []
-event_end_time = []
+event_name 
+event_location 
+event_start_time 
+event_end_time 
 event_id = []
-def get_event_name(intLen): #gets event name from dictionary
-	i = 0
-	l = intLen
-	while i < l:
-		event_name.append(group_dict['data'][i]['name'])
-		i+=1
-		#print i
+def get_event_name(event_id): #gets event name from event_id
+	i = event_id
+	event_name = group_dict['data'][i]['name']
+
 	print event_name
-def get_event_location(intLen):#gets event location from dictionary
-	i = 0
-	l = intLen
-	while i < l: 
-		event_location.append(group_dict['data'][i]['location'])
-		i+=1
+def get_event_location(event_id):#gets event location from event_id
+	i = event_id
+	event_location.append(group_dict['data'][i]['location'])
+		
 	print event_location
-def get_event_start_time(intLen):#gets event start time from dictionary
-	i = 0
-	l = intLen
-	while i < l: 
-		event_location.append(group_dict['data'][i]['start_time'])
-		i+=1
+def get_event_start_time(event_id):#gets event start time from event_id
+	i = event_id
+	event_start_time.append(group_dict['data'][i]['start_time'])
+
 	print event_location
-def get_event_end_time(intLen):#gets event end time from dictionary
-	i = 0
-	l = intLen
-	while i < l: 
-		event_location.append(group_dict['data'][i]['end_time'])
-		i+=1
+def get_event_end_time(event_id):#gets event end time from event_id
+	i = event_id
+	event_end_time.append(group_dict['data'][i]['end_time'])
+
 	print event_end_time
 def get_event_id(intLen):	#gets event id from dictionary
 	i = 0
 	l = intLen
 	while i < l: 
-		event_location.append(group_dict['data'][i]['id'])
-		i+=1
+		if event_id[i] in event_id:
+			i+=1
+		else:
+			event_id.append(group_dict['data'][i]['id'])
+			i+=1
 	print event_id
-get_event_location(l)
+
