@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+
+<body>
+
+  <table border="1px">
+    <tr>
+      <td>Event Name</td>
+      <td>Description</td>
+      <td>Start Time</td>
+      <td>End Time</td>
+      <td>Locaton</td>
+    </tr>
+    {% for row in table %}
+    <tr>
+      <td>{{row[0]}}</td>
+      <td>{{row[1]}}</td>
+      <td>{{row[2]}}</td>
+      <td>{{row[3]}}</td>
+      <td>{{row[5]}}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+</body>  
+</html>

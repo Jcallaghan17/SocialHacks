@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Team Name Here</title>
+<link rel = stylesheet type=text/css href="{{url_for('static', filename='index.css')}}">
+</head>
+
+<body>
+
+  <h1 id="header">Free Food...</h1>
+
+  <h2 id="subhead">Currently Limited to NYU</h2>
+
+
+  <p id="description">
+
+    Are you a person who is too poor to find enough to eat (or a NYU student that cannot afford food)?
+    Then this is the right place to be. Enter your ZIP Code below and click the button to find upcoming
+    events and places that will offer free food!
+    </br></br>
+    Right now you don't need to enter a ZIP because it's limited to NYU!
+
+  </p>
+  
+  <form action="/showResults">
+  <p>Enter Your ZIP Code: <input type="number"></p>
+  <p><button type="button" onclick="window.location.href='showResults'">Find Nearby Food</button></p>
+  
+  </form>
+  
+</body>
+</html>

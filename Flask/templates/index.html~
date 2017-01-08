@@ -1,7 +1,16 @@
-<!doctype html>
+<!DOCTYPE html>
+<html>
+
+<head>
 <title> Free Food </title>
 <link rel = stylesheet type=text/css href="{{url_for('static', filename='syle.css')}}">
-<div class=page> 
+</head>
+
+<body>
+<div class="page"> 
 	
 
 </div>
+
+</body>
+</html>

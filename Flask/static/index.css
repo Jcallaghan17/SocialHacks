@@ -1,0 +1,21 @@
+body {
+    background-color: lavender;
+    color: blue;
+    text-align: center;
+}
+
+
+h1 {
+    
+}
+
+h2 {
+    
+}
+
+#description {
+    color: black;
+    width: 50%;
+    margin: 20px 25%;
+    font-size: 20px;
+}
