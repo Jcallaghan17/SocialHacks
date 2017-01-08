@@ -3,6 +3,8 @@ import requests
 import json
 from addEventToDB import addEvent
 
+# install icalendar for python to work
+
 # NOTE: get_events() is being run periodically & only returns new events
 # TODO: modularize get()s
 # TODO: check events for existence in database
@@ -147,7 +149,7 @@ def get_exact_geocode(true_address):
 def check_building_db(name):
     # Find the coords & address for a building in the NYU db
     add_location_str = ""
-    with open("better_building_db.json", "r") as db:
+    with open("../data/better_building_db.json", "r") as db:
         b_dict = json.load(db)
         for key in b_dict:
             if key in name:
@@ -211,4 +213,4 @@ def get_google_address(location):
 # print get_exact_geocode(q)
 # print get_gplaces_geocode(q, COORDS, 15000)
 
-print get_events()
+# print get_events()
