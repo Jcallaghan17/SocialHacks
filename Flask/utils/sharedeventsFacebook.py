@@ -48,3 +48,5 @@ def get_shared_events():
     	        addEventToDB.addEvent(evs[i],get_shared_name(evs[i]),get_shared_description(evs[i]),get_shared_start(evs[i]),get_shared_end(evs[i]),None,get_shared_location(evs[i]))
                 i+=1
 
+
+#get_shared_events()

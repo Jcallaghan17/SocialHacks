@@ -12,7 +12,7 @@ app.jinja_env.add_extension('jinja2.ext.do')
 cron = Scheduler(daemon=True)
 cron.start()
 
-@cron.interval_schedule(minutes=10)
+@cron.interval_schedule(seconds=10)
 def recurring():
     print "get"
     facebookEvents.getEvents()

@@ -1,0 +1,32 @@
+body {
+    background-color: lavender;
+    color: blue;
+    text-align: center;
+    font-family: 'Ubuntu';
+}
+
+
+h1 {
+    
+}
+
+h2 {
+    
+}
+
+#description {
+    color: black;
+    width: 50%;
+    margin: 20px 25%;
+    font-size: 20px;
+}
+
+table {
+    font-size: 16px;
+    padding: 1.5px;
+}
+
+#th td{
+    font-style: bold;
+    font-size: 23px;
+}
