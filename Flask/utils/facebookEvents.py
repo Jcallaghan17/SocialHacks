@@ -15,7 +15,7 @@ import addEventToDB
 #change this: user token
 #https://developers.facebook.com/tools/access_token/
 
-token = 'EAAC1mYYLrqkBAFVX4KHqZBhf9ZBTwOKtyr2x7NDP59iSkh9DiqOgXMU9xGCed2gURoBAPiLWDO7gpxNmMPPLphAmskuRCJtuvCO9w6taHZBSomoWZA8RMvXT61uytQl4ORHsogURgjMYkwHK20g78Df4ZAZCNxrk0ZD'
+token = 'EAAC1mYYLrqkBAOByZCFTFVtCJWY5ky3ZCe4FSwpWLpJX9czjzT7ZAZAs0rKdCRzyi1RGAixlldMxdBgPertGQxnvB0hidHkmersHl5hlCqEl9j3O9ygyRaVNZARnnpb3GfpAPBWwbDZChSRcwQQWrp4KykPqnc0mEZD'
 
 
 graph = facebook.GraphAPI(token)
