@@ -9,9 +9,8 @@ import addEventToDB
 #https://developers.facebook.com/docs/graph-api/reference/event
 #https://developers.facebook.com/docs/graph-api/reference/v2.8/group/events
 #https://facebook-sdk.readthedocs.io/en/latest/api.html
-
-
-
+#TODO
+# ADD GROUP ID SO ITS PRETTIER
 
 #change this: user token
 #https://developers.facebook.com/tools/access_token/
