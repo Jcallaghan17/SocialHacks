@@ -35,15 +35,18 @@ COORDS = (40.7295, 73.9965)
 
 def sync_events():
     events_list = get_events()
+    print len(events_list)
     for event in events_list:
         geo = None
-        if event["geo"] is not "NO LOCATION":
+        if event["geo"] != "NO LOCATION":
             geo = event["geo"]
         address = None
-        if event["address"] is not "NO LOCATION":
+        if event["address"] != "NO LOCATION":
             address = event["address"]
+        "ical_parser: asking to add event"
         addEvent(event["uid"], event["title"], event["description"], event[
                  "timeStart"], event["timeEnd"], geo, address)
+        print "ical_parser: added event to db"
     print "ical_parser: events synced"
 
 
@@ -97,6 +100,7 @@ def get_events():
                 print "iCAL_parser ERROR: no location given"
             # Add event to events list
             events_list.append(entry)
+            # print "ical_parser: added event to events_list"
         # If event is already in db, not being added
     return events_list
 

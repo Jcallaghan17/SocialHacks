@@ -12,17 +12,51 @@ app.jinja_env.add_extension('jinja2.ext.do')
 cron = Scheduler(daemon=True)
 cron.start()
 
-@cron.interval_schedule(seconds=10)
+def syncFacebookEvents():
+    with app.app_context():
+        facebookEvents.getEvents()
+        print "got fb events"
+
+def syncSharedEvents():
+    with app.app_context():
+        sharedeventsFacebook.get_shared_events()
+        print "got fb shared events"
+
+"""
+def syncICalEvents():
+    with app.app_context():
+        ical_parser.sync_events()
+        print "got ical events"
+"""
+
+@app.before_first_request
+def initialize():
+    apsched = Scheduler()
+    apsched.start()
+
+    apsched.add_interval_job(syncFacebookEvents, seconds=10)
+    print "added job 1"
+    apsched.add_interval_job(syncSharedEvents, seconds=10)
+    print "added job 2"
+    # apsched.add_interval_job(syncICalEvents, seconds=10)
+    # print "added job 3"
+
+"""
+@cron.interval_schedule(seconds=20)
 def recurring():
-    print "get"
-    facebookEvents.getEvents()
-    sharedEvents.get_shared_events()
+    print "getting update"
+    #facebookEvents.getEvents()
+    print "\tgot facebook events"
+    #sharedEvents.get_shared_events()
+    print "\tgot facebook shared events"
     icalparser.sync_events()
-    
-@app.route("/") 
+    print "\tpulled ical"
+"""
+
+@app.route("/")
 def hello_world():
     return render_template("index.html")
-    
+
 
 khal = [0,1,1,2,3,5,8]
 
@@ -34,7 +68,7 @@ def test_tmplt():
 def test_uts():
     return 'hi'
 
-    
-if __name__ == "__main__": 
-    app.debug = True 
+
+if __name__ == "__main__":
+    app.debug = True
     app.run()

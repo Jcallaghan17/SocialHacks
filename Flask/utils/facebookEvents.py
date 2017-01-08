@@ -38,10 +38,10 @@ group_dict = json.loads(group_json) #takes less nasty json into dict
 #print group_dict['data']
 
 
-#event_name 
-#event_location 
-#event_start_time 
-#event_end_time 
+#event_name
+#event_location
+#event_start_time
+#event_end_time
 #event_description
 #event_id
 
@@ -50,7 +50,7 @@ def get_event_name(i): #gets event name from i element in data
 
 def get_event_location(i):#gets event location from i element in data
 	return group_dict['data'][i]['location']
-		
+
 def get_event_start_time(i):#gets event start time from i element in data
         return group_dict['data'][i]['start_time']
 
@@ -70,7 +70,8 @@ def getEvents():
         while (i < l):
                 addEventToDB.addEvent(get_event_id(i),get_event_name(i),get_event_description(i),get_event_start_time(i),get_event_end_time(i),None,get_event_location(i))
                 i+=1
-	
+		print "synced fb events"
+
 
 
 #getEvents()
