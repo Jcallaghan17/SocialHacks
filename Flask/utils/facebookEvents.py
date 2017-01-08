@@ -16,7 +16,8 @@ import addEventToDB
 #change this: user token
 #https://developers.facebook.com/tools/access_token/
 
-token = 'EAAC1mYYLrqkBABaBQxO0pFKN9aoGSC8fZC6r2TQ8gEm5lS1RCzmARermEJGP1pPQdtoFuBl0jDrCeC7v584hcoZAscZC0q3R6ZAbWmNE9ZAarnrlSdXrniJjJHNZBpZBtdxRw0v6GTcki11BlUGnl0HXiDXOKEVM8A1V7jVIn5oVgZDZD'
+token = 'EAAC1mYYLrqkBAFVX4KHqZBhf9ZBTwOKtyr2x7NDP59iSkh9DiqOgXMU9xGCed2gURoBAPiLWDO7gpxNmMPPLphAmskuRCJtuvCO9w6taHZBSomoWZA8RMvXT61uytQl4ORHsogURgjMYkwHK20g78Df4ZAZCNxrk0ZD'
+
 
 graph = facebook.GraphAPI(token)
 
@@ -27,56 +28,51 @@ def get_event():
 	print(event['end_time'])
 	print(event['place'])
 
-group = graph.get_object(id='358192317896345/events')
+group = graph.get_object(id='358192317896345/events',fields="name,id,location,start_time,end_time,description")
 group_json = json.dumps(group) #takes nasty data into json
 #print group_json
 group_dict = json.loads(group_json) #takes less nasty json into dict
 #for key, value in group_dict.iteritems():
 #	print key
 
-print group_dict['data']
 
-l = len(group_dict['data'])
-i = 0
-event_name 
-event_location 
-event_start_time 
-event_end_time 
-event_description
-event_id = []
-def get_event_name(event_id): #gets event name from event_id
-	i = event_id
-	event_name = group_dict['data'][i]['name']
+#print group_dict['data']
 
-	print event_name
-def get_event_location(event_id):#gets event location from event_id
-	i = event_id
-	event_location = group_dict['data'][i]['location']
+
+#event_name 
+#event_location 
+#event_start_time 
+#event_end_time 
+#event_description
+#event_id
+
+def get_event_name(i): #gets event name from i element in data
+	return  group_dict['data'][i]['name']
+
+def get_event_location(i):#gets event location from i element in data
+	return group_dict['data'][i]['location']
 		
-	print event_location
-def get_event_start_time(event_id):#gets event start time from event_id
-	i = event_id
-	event_start_time = group_dict['data'][i]['start_time']
+def get_event_start_time(i):#gets event start time from i element in data
+        return group_dict['data'][i]['start_time']
 
-	print event_location
-def get_event_end_time(event_id):#gets event end time from event_id
-	i = event_id
-	event_end_time = group_dict['data'][i]['end_time']
+def get_event_end_time(i):#gets event end time from i element in data
+	return group_dict['data'][i]['end_time']
 
-	print event_end_time
-def get_event_description(event_id): #gets event description from event_id
-	i = event_id
-	event_description = group_dict['data'][i]['description']
+def get_event_description(i): #gets event description from i element in data
+	return group_dict['data'][i]['description']
 
-def get_event_id(intLen):	#gets event id from dictionary
-	i = 0
-	l = intLen
-	while i < l: 
-		if event_id[i] in event_id:
-			i+=1
-		else:
-			event_id.append(group_dict['data'][i]['id'])
-			i+=1
-	print event_id
-get_event_id(l)
+def get_event_id(i):  #gets event id from i element in data
+        return group_dict['data'][i]['id']
+
+
+def getEvents():
+        l = len(group_dict['data'])
+        i = 0
+        while (i < l):
+                addEventToDB.addEvent(get_event_id(i),get_event_name(i),get_event_description(i),get_event_start_time(i),get_event_end_time(i),None,get_event_location(i))
+                i+=1
+	
+
+
+getEvents()
 #addEvent(event_id[i],event_name,event_description,event_start_time,event_end_time, 'geolocationplaceholder', event_location)
