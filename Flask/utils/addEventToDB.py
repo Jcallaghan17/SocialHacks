@@ -5,13 +5,12 @@ from geopy.geocoders import GoogleV3, Nominatim
 
 def addEvent(ide, title, desc, start, end, geo, add):
 
-    ide = int(ide)
+    ide = str(ide)
     
     f = "data/data.db"
 
     db = sqlite3.connect(f)
     c = db.cursor()
-
 
     q = "SELECT id from events"
     a = c.execute(q)
@@ -20,7 +19,7 @@ def addEvent(ide, title, desc, start, end, geo, add):
     
     for num in a:
         #print "IIIIIIIDDDDDDEEEEEEEE: " + str(num[0])
-        if num[0] == ide:
+        if str(num[0]) == ide:
             return False
 
         
@@ -30,7 +29,7 @@ def addEvent(ide, title, desc, start, end, geo, add):
 
     
     q = "INSERT INTO events VALUES ("
-    q += "%d, \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\")" % (ide, title, desc, start, end, getGeo, add)
+    q += "%s, \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\")" % (ide, title, desc, start, end, getGeo, add)
     c.execute(q)
 
     db.commit()
