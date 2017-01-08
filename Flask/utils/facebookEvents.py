@@ -15,41 +15,18 @@ import facebook
 #change this: user token
 #https://developers.facebook.com/tools/access_token/
 
-token = 'EAARsOJeuDDIBAI0BKktfZB03o5QeZCCkyulINIxoZC1nLPXfC17O5XyOHwvudBFeTbUG6ZCMBbBybvDbY8p1lribqdVa5L0P1aZC569YIpRDal46FrARIwy16EdJYeaFmwXo3t2a2fSB0mMCXucHrmokkBsT9BZC487q8C0DlwVwZDZD'
-
-
-
+token = 'EAAMZAuGqTFEcBAAAXFbEaugyb4ZAZClgwOWRKtltsdZAmjmeWiY0GHZCq8nB7olIZAFRZBlNYpipPNZBCKzuLJtU2V2cQjl8gRni8AMP4wvHjnwI8AxTuqbVZBZCVN3WT05VQa88fVUccZBbNuprlbUlv78QjZBueT22o8CpUDm51CxGZCQZDZD'
 
 graph = facebook.GraphAPI(token)
 
 
-event = graph.get_object(id='374068616302738', fields='description,start_time,end_time,place')
-#print(event['description'])
+event = graph.get_object(id='706776926156529', fields='description,start_time,end_time,place')
+print(event['description'])
 print(event['start_time'])
-print(event['end_time'])
-#print(event['place'])
+print(event['end_time']
+print(event['place'])
 
 #not tested
-#page = graph.get_object(id='358192317896345')
-
-
-#print page
-
-
-
-#page1 = graph.get_object(id='358192317896345/feed?metadata=1')
-
-#print page1['type']
-
-
-#for item in page1:
-#    print item
-#print page1['description']
-#print page1['paging']
-
-
-#page1 = graph.get_connections(id='358192317896345', connection_name='events')
-
-#print page1
-
-#print list(page1)
+page = graph.get_object(id='358192317896345/events')
+for thing in page:
+    print thing
