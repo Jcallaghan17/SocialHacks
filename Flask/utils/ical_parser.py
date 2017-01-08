@@ -149,7 +149,7 @@ def get_exact_geocode(true_address):
 def check_building_db(name):
     # Find the coords & address for a building in the NYU db
     add_location_str = ""
-    with open("better_building_db.json", "r") as db:
+    with open("utils/a.json", "r") as db:
         b_dict = json.load(db)
         for key in b_dict:
             if key in name:
