@@ -18,13 +18,13 @@
 <body onload="initMap()">
 
   <table border="1px" id="events">
-    <th>
+    <tr>
       <td>Event Name</td>
       <td>Description</td>
       <td>Start Time</td>
       <td>End Time</td>
       <td>Location</td>
-    </th>
+    </tr>
     {% for row in table %}
     <tr>
       <td>{{row[0]}}</td>
