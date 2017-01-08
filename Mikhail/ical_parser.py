@@ -22,7 +22,10 @@ ICAL_URL = "https://events.nyu.edu/live/ical/events/category/Free%20Food/header/
 G_API_KEY = "AIzaSyAVMs2KCYw3Qp34BEip-A-T78Nejd-J5W4"
 AUTOCOMPLETE_URL = "https://maps.googleapis.com/maps/api/place/autocomplete/json"
 GEOCODE_URL = "https://maps.googleapis.com/maps/api/geocode/json"
-TEXT_URL = "https://maps.googleapis.com/maps/api/place/textsearch/output"
+TEXT_URL = "https://maps.googleapis.com/maps/api/place/textsearch/json"
+
+# NYU coords
+COORDS = (40.7295, 73.9965)
 
 
 def get_events():
@@ -30,6 +33,8 @@ def get_events():
     calFeed = Calendar.from_ical(resp.text)
     events_list = []
     for component in calFeed.walk():
+        # if component.name == "VEVENT" and no
+        # dbMod.check_presence(component["uid"]):
         if component.name == "VEVENT":
             entry = {"title": component['summary'].to_ical(),
                      "timeStart": component["dtstart"].to_ical(),
@@ -45,36 +50,52 @@ def get_events():
             elif "x-livewhale-summary" in component:
                 entry["description"] = component[
                     "x-livewhale-summary"].to_ical()
-            # Try to get location
-            if "location" in component:
-                entry["location"] = component["location"].to_ical()
-            else:
-                entry["location"] = "NO LOCATION"
-            # Try to get geolocation from iCal or Google API (if location
-            # present)
+            # Get available location/coords, in order of preferance
             if "geo" in component:
                 entry["geo"] = component["geo"].to_ical()
+                entry["location"] = component["location"].to_ical()
             elif "location" in component:
-                entry["geo"] = get_google_geo(component["location"])
+                g_guess = get_gplaces_geocode(component["location"].to_ical(), COORDS, 15000)
+                db_address = check_building_db(component["location"].to_ical())
+                if g_guess != "ERROR":
+                    els = g_guess.split(";")
+                    entry["geo"] = els[0] + ", " + els[1]
+                    entry["location"] = els[2]
+                elif db_address != "":
+                    els = db_address.split(";")
+                    entry["geo"] = els[0] + ", " + els[1]
+                    entry["location"] = els[2]
+                else:
+                    entry["location"] = component["location"].to_ical()
+                    entry["geo"] = "NO GEO"
+                    # Add address that could not work to database
+                    # dbMod.add_failed_addresses(location)
+                    print "iCAL_parser ERROR: can't use address, adding to db"
             else:
-                entry["geo"] = "NO LOCATION"
+                entry["location"] = "NO LOCATION"
+                entry["geo"] = "NO GEO"
+                print "iCAL_parser ERROR: no location given"
             # Add event to events list
             events_list.append(entry)
+        # If event is already in db, not being added
     return events_list
 
 
-def get_gplaces_geocode(location):
+def get_gplaces_geocode(location, coords=None, radius=None):
     # Use Google Places Autocomplete API to attempt to predict exact
     # address & coords for an inexact location
     # Returns string with "lat, long; address", or error
     query = {"input": location, "types": "geocode", "key": G_API_KEY}
+    if coords is not None and radius is not None:
+        query["location"] = str(coords[0]) + "," + str(coords[1])
+        query["radius"] = radius
     resp = requests.get(AUTOCOMPLETE_URL, query)
     res_dict = json.loads(resp.text)
     if res_dict["status"] != "OK":
         errstr = "ERROR: get_gplaces_geocode('" + location + "') failed b/c"
         errstr += " " + res_dict["status"]
         print errstr
-        return "ERROR"  # Catch-all zero results, quota, and other problems
+        return "ERROR"  # Catch-all zero resuts, quota, and other problems
     address = res_dict["predictions"][0]["description"]
     geocode = get_exact_geocode(address)
     if geocode == "ERROR":
@@ -85,21 +106,72 @@ def get_gplaces_geocode(location):
     return geocode + ";" + address
 
 
+def get_exact_geocode(true_address):
+    """
+        Arg: (str) an address
+            If address is exact, geocoding almost guaranteed to succeed
+            If inexact, most likely will fail & return error
+        Returns: (str) comma-separated lat & long (on success), or "ERROR"
+            on fail
+    """
+    query = {"address": true_address, "key": G_API_KEY}
+    resp = requests.get(GEOCODE_URL, query)
+    res_dict = json.loads(resp.text)
+    if res_dict["status"] != "OK":
+        errstr = "ERROR: get_google_geocode('" + \
+            true_address + "') failed b/c"
+        errstr += " " + res_dict["status"]
+        print errstr
+        return "ERROR"  # Catch-all zero results, quota, and other problems
+    lat_long = res_dict["results"][0]["geometry"]["location"]
+    # print resp.text
+    return str(lat_long["lat"]) + ";" + str(lat_long["lng"])
+
+
+def check_building_db(name):
+    # Find the coords & address for a building in the NYU db
+    add_location_str = ""
+    with open("better_building_db.json", "r") as db:
+        b_dict = json.load(db)
+        for key in b_dict:
+            if key in name:
+                # Check if the building name is part of the address string
+                add_location_str = str(b_dict[key]["lat"])
+                add_location_str += ";" + str(b_dict[key]["long"])
+                add_location_str += ";" + b_dict[key]["address"]
+                break
+    return add_location_str
+
+
+"""
 def get_gtext_geocode(location):
-    # Use
-    id_query = {"input": location, "types": "geocode", "key": G_API_KEY}
-    id_resp = requests.get(AUTOCOMPLETE_URL, id_query)
-    print id_resp.tex
-    id_res_dict = json.loads(id_resp.text)
-    if id_res_dict["status"] != "OK":
-        print "###########"
-        return "error"  # Catch-all zero results, quota, and other problems
-    res_place_id = id_res_dict["predictions"][0]["place_id"]
-    print id_res_dict["predictions"][0]["description"]
-    print res_place_id
+    # DOES NOT WORK FOR ADDRESSES
+
+    # Use Google Places Autocomplete API to attempt to predict exact
+    # address & coords for an inexact location
+    # Returns string with "lat, long; address", or error
+    query = {"query": location, "key": G_API_KEY}
+    resp = requests.get(TEXT_URL, query)
+    res_dict = json.loads(resp.text)
+    if res_dict["status"] != "OK":
+        errstr = "ERROR: get_gtext_geocode('" + location + "') failed b/c"
+        errstr += " " + res_dict["status"]
+        print errstr
+        return "ERROR"  # Catch-all zero results, quota, and other problems
+    print resp.text
+    address = res_dict["results"][0]["description"]
+    geocode = get_exact_geocode(address)
+    if geocode == "ERROR":
+        errstr = "ERROR: get_gtext_geocode('" + location + "') failed b/c"
+        errstr += " geocode couldn't be matched to address"
+        print errstr
+        return "ERROR"  # Catch-all zero results, quota, and other problems
+    return geocode + ";" + address
 
 
 def get_google_address(location):
+    # NOT NEEED ANYMORE
+
     # Used to get a true address for an event location
     # Assumes that the first result is the correct one
 
@@ -115,30 +187,12 @@ def get_google_address(location):
     # return the address
     # print add_resp.text
     return add_res_dict["predictions"][0]["description"]
-
-
-def get_exact_geocode(true_address):
-    """
-        Arg: (str) an address
-            If address is exact, geocoding almost guaranteed to succeed
-            If inexact, most likely will fail & return error
-        Returns: (str) comma-separated lat & long (on success), or "ERROR"
-            on fail
-    """
-    query = {"address": true_address, "key": G_API_KEY}
-    resp = requests.get(GEOCODE_URL, query)
-    res_dict = json.loads(resp.text)
-    if res_dict["status"] != "OK":
-        errstr = "ERROR: get_google_geocode('" + true_address + "') failed b/c"
-        errstr += " " + res_dict["status"]
-        print errstr
-        return "ERROR"  # Catch-all zero results, quota, and other problems
-    lat_long = res_dict["results"][0]["geometry"]["location"]
-    # print resp.text
-    return str(lat_long["lat"]) + ", " + str(lat_long["lng"])
+"""
 
 
 # print get_events()
-q = "82 Washington Square E"
-print get_exact_geocode(q)
-print get_gplaces_geocode(q)
+# q = "82 Washington Square East"
+# print get_exact_geocode(q)
+# print get_gplaces_geocode(q, COORDS, 15000)
+
+print get_events()
