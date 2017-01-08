@@ -7,7 +7,7 @@ from apscheduler.scheduler import Scheduler
 from utils import parseDB, facebookEvents
 
 app = Flask(__name__)
-
+app.jinja_env.add_extension('jinja2.ext.do')
 
 cron = Scheduler(daemon=True)
 cron.start()

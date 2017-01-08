@@ -24,7 +24,7 @@ def parse():
         desc = entry[2]
         start = entry[3]
         end = entry[4]
-        gps = entry[5]   #.split(',')
+        gps = entry[5].split(',')
         addr = entry[6];
        
         start =  utc_to_local(start)

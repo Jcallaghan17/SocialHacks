@@ -1,5 +1,7 @@
 import sqlite3
+from geopy.geocoders import GoogleV3, Nominatim
 
+#AIzaSyCfq1QRfIb3OxIvLMwcbKymZ1E0AbaLIds
 
 def addEvent(ide, title, desc, start, end, geo, add):
 
@@ -20,10 +22,15 @@ def addEvent(ide, title, desc, start, end, geo, add):
         #print "IIIIIIIDDDDDDEEEEEEEE: " + str(num[0])
         if num[0] == ide:
             return False
-    
+
+        
+    geolocator = Nominatim()
+    location = geolocator.geocode(add)
+    getGeo = "%f,%f" % (location.latitude,location.longitude) 
+
     
     q = "INSERT INTO events VALUES ("
-    q += "%d, \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\")" % (ide, title, desc, start, end, geo, add)
+    q += "%d, \"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\")" % (ide, title, desc, start, end, getGeo, add)
     c.execute(q)
 
     db.commit()

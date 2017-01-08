@@ -3,28 +3,90 @@
 <head>
   <title>Results</title>
   <link rel = stylesheet type=text/css href="{{url_for('static', filename='index.css')}}">
+
+
+  <style>
+       #map {
+        height: 400px;
+        width: 100%;
+       }
+    </style>
+  
 </head>
 
-<body>
+<body onload="initMap()">
 
-  <table border="1px">
-    <tr>
+  <table border="1px" id="events">
+    <th>
       <td>Event Name</td>
       <td>Description</td>
       <td>Start Time</td>
       <td>End Time</td>
-      <td>Locaton</td>
-    </tr>
+      <td>Location</td>
+    </th>
     {% for row in table %}
     <tr>
       <td>{{row[0]}}</td>
       <td>{{row[1]}}</td>
       <td>{{row[2]}}</td>
       <td>{{row[3]}}</td>
+      <td>{{row[4]}}</td>
       <td>{{row[5]}}</td>
     </tr>
     {% endfor %}
   </table>
+
+  {{table[1][4][0]}}
+
+  <div id="map"></div>
+
+
+  <script>
+    var tabel = document.getElementById("events");
+    var noEvents = tabel.rows.length - 1;
+    if (noEvents > 10) {
+    noEvents = 10;
+    }
+    console.log(noEvents);
+    
+    
+    function initMap() {
+        var uluru = {lat: 40.7296, lng: -73.9952};
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 12,
+          center: uluru
+        });
+
+
+    
+    {% for item in table %}
+
+			
+	var la = {{item[4][0]}};
+	var lo = {{item[4][1]}};
+	console.log( la, lo);		
+	var nell = {lat: la, lng: lo};		
+			
+        var marker = new google.maps.Marker({
+
+	  position: nell, 
+          map: map
+        });
+
+	
+    {% endfor %}
+
+	
+	
+    }
+    
+
+    
+  </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTCtwq8pRomq2kgwCbW8KgGFNAeD6IDqc&callback=initMap">
+    </script>
 
 </body>  
 </html>
