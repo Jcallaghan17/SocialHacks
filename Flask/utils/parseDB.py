@@ -18,8 +18,15 @@ def parse():
     a = c.execute(q)
 
     table = []
+
+    sortTab = []
+
+    for obj in a:
+        sortTab.append(obj)
     
-    for entry in a:
+    sortTab.sort(key=lambda x: x[3], reverse=False)
+    
+    for entry in sortTab:
         title = entry[1]
         desc = entry[2]
         start = entry[3]
