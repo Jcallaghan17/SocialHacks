@@ -42,6 +42,7 @@ event_name
 event_location 
 event_start_time 
 event_end_time 
+event_description
 event_id = []
 def get_event_name(event_id): #gets event name from event_id
 	i = event_id
@@ -50,19 +51,23 @@ def get_event_name(event_id): #gets event name from event_id
 	print event_name
 def get_event_location(event_id):#gets event location from event_id
 	i = event_id
-	event_location.append(group_dict['data'][i]['location'])
+	event_location = group_dict['data'][i]['location']
 		
 	print event_location
 def get_event_start_time(event_id):#gets event start time from event_id
 	i = event_id
-	event_start_time.append(group_dict['data'][i]['start_time'])
+	event_start_time = group_dict['data'][i]['start_time']
 
 	print event_location
 def get_event_end_time(event_id):#gets event end time from event_id
 	i = event_id
-	event_end_time.append(group_dict['data'][i]['end_time'])
+	event_end_time = group_dict['data'][i]['end_time']
 
 	print event_end_time
+def get_event_description(event_id): #gets event description from event_id
+	i = event_id
+	event_description = group_dict['data'][i]['description']
+
 def get_event_id(intLen):	#gets event id from dictionary
 	i = 0
 	l = intLen
@@ -73,4 +78,5 @@ def get_event_id(intLen):	#gets event id from dictionary
 			event_id.append(group_dict['data'][i]['id'])
 			i+=1
 	print event_id
-
+get_event_id(l)
+#addEvent(event_id[i],event_name,event_description,event_start_time,event_end_time, 'geolocationplaceholder', event_location)
