@@ -2,6 +2,8 @@ from icalendar import Calendar, Event
 import requests
 import json
 from addEventToDB import addEvent
+import datetime
+import pytz
 
 # install icalendar for python to work
 
@@ -54,8 +56,8 @@ def get_events():
         # dbMod.check_presence(component["uid"]):
         if component.name == "VEVENT":
             entry = {"title": component['summary'].to_ical(),
-                     "timeStart": component["dtstart"].to_ical(),
-                     "timeEnd": component["dtend"].to_ical(),
+                     "timeStart": format_time(component["dtstart"].to_ical()),
+                     "timeEnd": format_time(component["dtend"].to_ical()),
                      "url": component["url"],
                      "uid": component["uid"].to_ical()}
             # Get image if present
@@ -161,6 +163,13 @@ def check_building_db(name):
     return add_location_str
 
 
+def format_time(og_time):
+    time_obj = datetime.datetime(int(og_time[0:4]), int(og_time[4:6]), int(og_time[6:8]), int(og_time[9:11]))
+    eastern = pytz.timezone('US/Eastern')
+    # new_time = time_obj.strptime(str(time_obj), "%Y-%m-%dT%H:%M:%S%Z")
+    tz_new_time = eastern.localize(time_obj)
+    return tz_new_time.strftime("%Y-%m-%dT%H:%M:%S%z")
+
 """
 def get_gtext_geocode(location):
     # DOES NOT WORK FOR ADDRESSES
@@ -213,4 +222,4 @@ def get_google_address(location):
 # print get_exact_geocode(q)
 # print get_gplaces_geocode(q, COORDS, 15000)
 
-print get_events()
+# print get_events()
