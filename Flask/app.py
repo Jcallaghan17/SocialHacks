@@ -4,7 +4,7 @@ import atexit
 from apscheduler.scheduler import Scheduler
 
 
-from utils import parseDB, facebookEvents, sharedeventsFacebook
+from utils import parseDB, facebookEvents, sharedeventsFacebook, ical_parser
 
 app = Flask(__name__)
 app.jinja_env.add_extension('jinja2.ext.do')
@@ -17,6 +17,7 @@ def recurring():
     print "get"
     facebookEvents.getEvents()
     sharedEvents.get_shared_events()
+    icalparser.sync_events()
     
 @app.route("/") 
 def hello_world():
