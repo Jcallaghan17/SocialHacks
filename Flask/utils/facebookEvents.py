@@ -16,7 +16,7 @@ import json
 #change this: user token
 #https://developers.facebook.com/tools/access_token/
 
-token = 'EAAC1mYYLrqkBACm5KZCHswZBathr2jEGRfLNGJdTSHXTLZBg2Ui99U3H6ZAGqPKbXeZAAIrhzZB1ZAlzBLXMaHXN4myoYDEe9ZBSpv5tLq9FEaXvFUO222tr6TZBEn4yqz9Sf1HcZANyHn5waJfQL0mxiJtMFtT5wVMWIlZCPOJZBBZCu7wZDZD'
+token = 'EAAC1mYYLrqkBABaBQxO0pFKN9aoGSC8fZC6r2TQ8gEm5lS1RCzmARermEJGP1pPQdtoFuBl0jDrCeC7v584hcoZAscZC0q3R6ZAbWmNE9ZAarnrlSdXrniJjJHNZBpZBtdxRw0v6GTcki11BlUGnl0HXiDXOKEVM8A1V7jVIn5oVgZDZD'
 
 graph = facebook.GraphAPI(token)
 
@@ -34,14 +34,49 @@ group_dict = json.loads(group_json) #takes less nasty json into dict
 #for key, value in group_dict.iteritems():
 #	print key
 
-#print group_dict['data']
+print group_dict['data']
 
 l = len(group_dict['data'])
 i = 0
-#while i < 2:
-	#group_array = []
-	#group_array.append(group_dict['data'][i]['name'])
-	#i+=1
-	#print i
-print group_array
-
+event_name = []
+event_location = []
+event_start_time = []
+event_end_time = []
+event_id = []
+def get_event_name(intLen): #gets event name from dictionary
+	i = 0
+	l = intLen
+	while i < l:
+		event_name.append(group_dict['data'][i]['name'])
+		i+=1
+		#print i
+	print event_name
+def get_event_location(intLen):#gets event location from dictionary
+	i = 0
+	l = intLen
+	while i < l: 
+		event_location.append(group_dict['data'][i]['location'])
+		i+=1
+	print event_location
+def get_event_start_time(intLen):#gets event start time from dictionary
+	i = 0
+	l = intLen
+	while i < l: 
+		event_location.append(group_dict['data'][i]['start_time'])
+		i+=1
+	print event_location
+def get_event_end_time(intLen):#gets event end time from dictionary
+	i = 0
+	l = intLen
+	while i < l: 
+		event_location.append(group_dict['data'][i]['end_time'])
+		i+=1
+	print event_end_time
+def get_event_id(intLen):	#gets event id from dictionary
+	i = 0
+	l = intLen
+	while i < l: 
+		event_location.append(group_dict['data'][i]['id'])
+		i+=1
+	print event_id
+get_event_location(l)
