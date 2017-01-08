@@ -43,4 +43,4 @@ def parse():
     return table
 
 
-print parse()
+#print parse()
