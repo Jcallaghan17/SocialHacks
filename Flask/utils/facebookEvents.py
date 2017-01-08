@@ -74,5 +74,5 @@ def getEvents():
 	
 
 
-getEvents()
+
 #addEvent(event_id[i],event_name,event_description,event_start_time,event_end_time, 'geolocationplaceholder', event_location)
